@@ -86,13 +86,8 @@ body {
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  color: black;
+  background-color: white;
 }
 
 a {
@@ -105,3 +100,27 @@ a {
     color-scheme: dark;
   }
 }
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient-text {
+  @apply inline-block bg-clip-text text-transparent;
+  background-size: 200% 200%;
+  animation: gradient 8s ease infinite;
+}
+
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
