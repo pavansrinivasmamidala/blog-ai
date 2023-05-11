@@ -119,6 +119,12 @@ a {
   animation: gradient 8s ease infinite;
 }
 
+.animated-gradient-text-loading {
+  @apply inline-block bg-clip-text text-transparent;
+  background-size: 200% 200%;
+  animation: gradient 3s ease-in-out infinite;
+}
+
 
 
 @tailwind base;

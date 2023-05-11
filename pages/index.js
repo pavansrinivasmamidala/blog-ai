@@ -1,62 +1,54 @@
-import { useState } from "react";
+// import { useState } from "react";
 import Layout from "../components/layout";
-import Link from 'next/link'
-
-const { Configuration, OpenAIApi } = require("openai");
-
-const configuration = new Configuration({
-  apiKey: "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",
-});
-
-const openai = new OpenAIApi(configuration);
+import Link from "next/link";
 
 export default function Home() {
-  const [text, setText] = useState("");
-  const [title, setTitle] = useState("");
-  const [blogData, setBlogData] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [imageUrl, setImageUrl] = useState("");
+  // const [text, setText] = useState("");
+  // const [title, setTitle] = useState("");
+  // const [blogData, setBlogData] = useState("");
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [imageUrl, setImageUrl] = useState("");
 
-  async function generateBlog(e) {
-    e.preventDefault();
+  // async function generateBlog(e) {
+  //   e.preventDefault();
 
-    setIsLoading(true);
-    setTitle(text);
-    generateCoverPrompt();
-    console.log(process.env.OPENAI_API_KEY);
+  //   setIsLoading(true);
+  //   setTitle(text);
+  //   generateCoverPrompt();
+  //   console.log(process.env.OPENAI_API_KEY);
 
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: `Generate a blog post based on the title: ${text}`,
-      temperature: 0.6,
-      max_tokens: 100,
-    });
+  //   const response = await openai.createCompletion({
+  //     model: "text-davinci-003",
+  //     prompt: `Generate a blog post based on the title: ${text}`,
+  //     temperature: 0.6,
+  //     max_tokens: 100,
+  //   });
 
-    console.log(response);
-    setBlogData(response.data.choices[0].text);
-    setIsLoading(false);
-    console.log(blogData);
-    console.log(text);
-    setText("");
-  }
+  //   console.log(response);
+  //   setBlogData(response.data.choices[0].text);
+  //   setIsLoading(false);
+  //   console.log(blogData);
+  //   console.log(text);
+  //   setText("");
+  // }
 
-  async function generateCoverPrompt() {
-    const response = await openai.createCompletion({
-      model: "text-davinci-003",
-      prompt: `Generate a cover page image prompt to ask dall-e for the blog post with the following title: "${title}"`,
-      temperature: 0.6,
-      max_tokens: 100,
-    });
-    console.log(response.data.choices[0].text);
+  // async function generateCoverPrompt() {
+  //   const response = await openai.createCompletion({
+  //     model: "text-davinci-003",
+  //     prompt: `Generate a cover page image prompt to ask dall-e for the blog post with the following title: "${title}"`,
+  //     temperature: 0.6,
+  //     max_tokens: 100,
+  //   });
+  //   console.log(response.data.choices[0].text);
 
-    const imageResponse = await openai.createImage({
-      prompt: response.data.choices[0].text,
-      n: 1,
-      size: "1024x1024",
-    });
-    console.log(imageResponse);
-    setImageUrl(imageResponse.data.data[0].url);
-  }
+  //   const imageResponse = await openai.createImage({
+  //     prompt: response.data.choices[0].text,
+  //     n: 1,
+  //     size: "1024x1024",
+  //   });
+  //   console.log(imageResponse);
+  //   setImageUrl(imageResponse.data.data[0].url);
+  // }
 
   return (
     // <div className="flex flex-col  justify-center mx-auto items-center h-full">
@@ -121,10 +113,16 @@ export default function Home() {
         </div>
 
         <div className="mt-32 flex justify-between items-center max-w-2xl">
-          <Link href="/showcase" className="text-white bg-black font-semibold text-4xl px-4 py-4 rounded-lg shadow-black">
+          <Link
+            href="/showcase"
+            className="text-white bg-black font-semibold text-4xl px-4 py-4 rounded-lg shadow-black"
+          >
             Checkout Showcase
           </Link>
-          <Link href="/create-blog" className="text-white flex justify-center items-center bg-black font-semibold text-4xl px-3 py-4 rounded-lg shadow-black">
+          <Link
+            href="/create-blog"
+            className="text-white flex justify-center items-center bg-black font-semibold text-4xl px-3 py-4 rounded-lg shadow-black"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="40"

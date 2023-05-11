@@ -2,15 +2,10 @@ import { useState } from "react";
 import Layout from "../components/layout";
 import { fetchOpenAiCompletion } from "../utils/openaiApi";
 import FormattedText from "../components/formattedText";
-import loading from "../utils/assets/loading.gif"
+import loading from "../assets/loading.gif";
+import Article from "../components/article";
 
 const { Configuration, OpenAIApi } = require("openai");
-
-const configuration = new Configuration({
-  apiKey: "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",
-});
-
-const openai = new OpenAIApi(configuration);
 
 export default function createBlog() {
   const [text, setText] = useState("");
@@ -46,7 +41,7 @@ export default function createBlog() {
         " Intended Audience: " +
         audience.join(", ") +
         ". Please include appropriate HTML tags and styling for different font sizes and formatting."
-    
+
       );
       console.log("Completion:", completion);
 
@@ -56,6 +51,8 @@ export default function createBlog() {
       console.error("Error fetching completion:", error.message);
     }
 
+    
+    // setIsLoading(false);
     // console.log(completion.data);
 
     // const response = await openai.createCompletion({
@@ -211,7 +208,10 @@ export default function createBlog() {
         )}
         {text.length > 2 ? (
           <div className="mt-8">
-            <button onClick={generateBlog} className="px-6 py-3 bg-black text-white rounded-2xl text-3xl  ">
+            <button
+              onClick={generateBlog}
+              className="px-6 py-3 bg-black text-white rounded-2xl text-3xl  "
+            >
               Generate Article
             </button>
           </div>
@@ -220,10 +220,17 @@ export default function createBlog() {
         )}
 
         {isLoading ? (
-          <div>
-           <img src={loading}  alt="loading..."/>
+          <div className="mt-8 flex justify-center items-center">
+            <span  className="animated-gradient-text-loading text-5xl font-semibold pb-4 mt-10"
+              style={{
+                backgroundImage:
+                  "linear-gradient(45deg, #007cf0, #00dfd8, #7928ca, #ff0080, #ff4d4d, #f9cb28)",
+              }}>
+                Generating...
+            </span>
+            {/* <img src={loading} alt="loading..." /> */}
           </div>
-        ) : blogData ? (
+        ) : blogData.content ? (
           <div className="flex flex-col justify-center p-10 items-center">
             {/* <div className="w-3/4 m-5 ">
               <img src={imageUrl} alt="cover page" />
@@ -233,7 +240,9 @@ export default function createBlog() {
             </span> */}
             <div className="border-white border m-10 items-center rounded-md p-10">
               <span className="text-lg p-20 ">
-                <FormattedText text={blogData?.content || ""} />{" "}
+                <Article htmlContent={blogData?.content || ""} />
+
+                {/* <FormattedText text={blogData?.content || ""} />{" "} */}
                 {/* <ReactMarkdown >{blogData?.content}</ReactMarkdown>; */}
               </span>
             </div>
