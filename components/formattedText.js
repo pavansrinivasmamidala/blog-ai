@@ -3,7 +3,7 @@ import parse, { domToReact } from "html-react-parser";
 import CodeBlock from "./codeblock";
 
 const FormattedText = ({ text }) => {
-  let inPreTag = false; // Flag to track if we're inside a <pre> tag
+  let inPreTag = false; 
 
   const options = {
     replace: ({ attribs, children, name }) => {
@@ -15,38 +15,32 @@ const FormattedText = ({ text }) => {
         );
       }
 
-      if (name === "h2") {
+      if (name === "h2" || name === "h3" || name === "h4" ) {
         return (
-          <span className="text-xl font-bold flex items-center">
+          <span className="text-xl font-bold mt-4 flex items-center">
             {domToReact(children, options)}
           </span>
         );
       }
 
       if (name === "p") {
-        return <p className="my-8 text-lg">{domToReact(children, options)}</p>;
+        return <p className="my-6 text-lg">{domToReact(children, options)}</p>;
       }
 
       if (name === "pre") {
-        inPreTag = true; // Set flag to true when we encounter a <pre> tag
+        inPreTag = true; 
         const preContent = <pre>{domToReact(children, options)}</pre>;
-        inPreTag = false; // Reset flag after processing children
+        inPreTag = false; 
         return preContent;
       }
 
       if (name === "code") {
         if (inPreTag) {
-          // If code tag is inside a pre tag
           return <CodeBlock code={domToReact(children, options)} />;
         } else {
-          // If code tag is inside a p tag or some other tag
           return <code className="bg-black rounded-md px-3 py-[2px] text-white">{domToReact(children, options)}</code>;
         }
       }
-
-      // if (name === "code") {
-      //   return <CodeBlock code={domToReact(children, options)} />;
-      // }
     },
   };
 

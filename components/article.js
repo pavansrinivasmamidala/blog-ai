@@ -1,29 +1,61 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import FormattedText from "./formattedText";
+import Link from "next/link";
 
 const Article = ({ htmlContent }) => {
   const articleRef = useRef();
+  const [copyText, setCopyText] = useState("Copy to Clipboard");
 
   const copyToClipboard = async () => {
     try {
-      await navigator.clipboard.writeText(articleRef.current.innerText);
-      alert("Text copied to clipboard!");
+      let articleText = articleRef.current.innerText;
+      // Split the article text by line, filter out lines that only contain the word "Copy", and join them back
+      const filteredText = articleText
+        .split("\n")
+        .filter((line) => !/^Copy$/.test(line.trim()))
+        .join("\n");
+
+      await navigator.clipboard.writeText(filteredText);
+      setCopyText("Copied to Clipboard");
+
+      setInterval(() => {
+        setCopyText("Copy to Clipboard");
+      }, 5000);
     } catch (err) {
       console.error("Failed to copy text: ", err);
     }
   };
 
   return (
-    <div >
+    <div className="container relative">
+      <Link href="/create-blog" className="border-2 absolute left-2  px-3 py-1 rounded-lg border-black "> 
+      <span
+          className="animated-gradient-text-copy text-xl font-bold"
+          style={{
+            backgroundImage:
+              "linear-gradient(45deg, #007cf0, #00dfd8, #7928ca, #ff0080, #ff4d4d, #f9cb28)",
+          }}
+        >
+          Create a New Blog
+        </span>
+      </Link>
       <button
         onClick={copyToClipboard}
-        className="border-2 flex justify-end items-center text-end self-end px-4 py-2 rounded-lg border-black "
+        className="border-2 absolute right-2  px-3 py-1 rounded-lg border-black "
       >
-        Copy to Clipboard
+        <span
+          className="animated-gradient-text-copy text-xl font-bold"
+          style={{
+            backgroundImage:
+              "linear-gradient(45deg, #007cf0, #00dfd8, #7928ca, #ff0080, #ff4d4d, #f9cb28)",
+          }}
+        >
+          {copyText}
+        </span>
       </button>
       <div
         ref={articleRef}
-        className="border-white border m-10 items-center rounded-md p-10"
+        className="border-white border mx-10 items-center rounded-md p-10"
       >
         <span className="text-lg p-20">
           <FormattedText text={htmlContent || ""} />

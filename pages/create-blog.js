@@ -1,13 +1,14 @@
 import { useState } from "react";
 import Layout from "../components/layout";
 import { fetchOpenAiCompletion } from "../utils/openaiApi";
-import FormattedText from "../components/formattedText";
-import loading from "../assets/loading.gif";
 import Article from "../components/article";
+import { useStore } from '../store/store';
+import { useRouter } from 'next/router';
 
-const { Configuration, OpenAIApi } = require("openai");
+
 
 export default function createBlog() {
+  const router = useRouter();
   const [text, setText] = useState("");
   const [title, setTitle] = useState("");
   const [blogData, setBlogData] = useState({});
@@ -25,6 +26,8 @@ export default function createBlog() {
     "Students",
     "Researchers",
   ];
+  const { dispatch } = useStore();
+
 
   async function generateBlog(e) {
     e.preventDefault();
@@ -35,23 +38,27 @@ export default function createBlog() {
     try {
       const completion = await fetchOpenAiCompletion(
         "Write an HTML formatted article based on Title: " +
-        text +
-        " Size: " +
-        length +
-        " Intended Audience: " +
-        audience.join(", ") +
-        ". Please include appropriate HTML tags and styling for different font sizes and formatting."
-
+          text +
+          " Size: " +
+          length +
+          " Intended Audience: " +
+          audience.join(", ") +
+          ". Please include appropriate HTML tags and styling for different font sizes and formatting."
       );
       console.log("Completion:", completion);
 
       setBlogData(completion);
+      dispatch({
+        type: "SET_BLOG_DATA",
+        payload: completion
+      });
       setIsLoading(false);
+      router.push('/read-article');
+
     } catch (error) {
       console.error("Error fetching completion:", error.message);
     }
 
-    
     // setIsLoading(false);
     // console.log(completion.data);
 
@@ -102,12 +109,6 @@ export default function createBlog() {
   return (
     <Layout>
       <div className="flex flex-col  justify-center mx-auto items-center ">
-        {/* <div className="flex w-1/2 justify-center items-center h-full">
-    Enter a title for the blog you want to create and the
-    <span className="text-xl font-bold"> AI </span> will generate one for
-    you
-  </div> */}
-
         <div className="flex flex-col justify-center p-10 items-center h-full">
           <form
             onSubmit={generateBlog}
@@ -221,12 +222,14 @@ export default function createBlog() {
 
         {isLoading ? (
           <div className="mt-8 flex justify-center items-center">
-            <span  className="animated-gradient-text-loading text-5xl font-semibold pb-4 mt-10"
+            <span
+              className="animated-gradient-text-loading text-5xl font-semibold pb-4 mt-10"
               style={{
                 backgroundImage:
                   "linear-gradient(45deg, #007cf0, #00dfd8, #7928ca, #ff0080, #ff4d4d, #f9cb28)",
-              }}>
-                Generating...
+              }}
+            >
+              Generating...
             </span>
             {/* <img src={loading} alt="loading..." /> */}
           </div>

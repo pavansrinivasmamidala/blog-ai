@@ -21,7 +21,7 @@ const CodeBlock = ({ code }) => {
     <div className="relative bg-black rounded-md">
       <pre
         ref={codeRef}
-        className=" text-white px-2 py-2 mx-2 my-4 whitespace-pre-wrap overflow-x-auto "
+        className=" text-white px-2 py-2 mx-2 my-2 whitespace-pre-wrap overflow-x-auto "
       >
         {code}
       </pre>
@@ -47,7 +47,7 @@ const CodeBlock = ({ code }) => {
         </svg>
 
         <span
-          className="animated-gradient-text font-semibold"
+          className="animated-gradient-text-copy font-semibold"
           style={{
             backgroundImage:
               "linear-gradient(45deg, #FFB3BA, #FFDFBA, #FFFFBA, #BAFFC9, #BAE1FF)",

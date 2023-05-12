@@ -97,10 +97,10 @@ export default function Home() {
     <Layout>
       <div className="container mx-auto ">
         <div className="max-w-4xl mt-20 pb-4">
-          <span className="font-bold text-8xl" style={{ lineHeight: "107px" }}>
+          <span className="font-bold text-8xl" style={{ lineHeight: "120px" }}>
             Generate a
             <span
-              className="animated-gradient-text"
+              className="animated-gradient-text mr-4"
               style={{
                 backgroundImage:
                   "linear-gradient(45deg, #007cf0, #00dfd8, #7928ca, #ff0080, #ff4d4d, #f9cb28)",
@@ -115,13 +115,13 @@ export default function Home() {
         <div className="mt-32 flex justify-between items-center max-w-2xl">
           <Link
             href="/showcase"
-            className="text-white bg-black font-semibold text-4xl px-4 py-4 rounded-lg shadow-black"
+            className="text-white bg-gray-600 font-semibold text-4xl px-4 py-4 rounded-lg shadow-black"
           >
             Checkout Showcase
           </Link>
           <Link
             href="/create-blog"
-            className="text-white flex justify-center items-center bg-black font-semibold text-4xl px-3 py-4 rounded-lg shadow-black"
+            className="text-white flex justify-center items-center bg-gray-900 font-semibold text-4xl px-3 py-4 rounded-lg shadow-black"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -133,6 +133,8 @@ export default function Home() {
               <path fill="#000" strokeWidth={10} d="M0 0h24v24H0z" />
               <path fill="#fff" d="M11 11V5h2v6h6v2h-6v6h-2v-6H5v-2z" />
             </svg>
+
+            
             Start Creating
           </Link>
         </div>
