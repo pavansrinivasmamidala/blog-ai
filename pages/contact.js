@@ -1,9 +1,9 @@
 import Layout from "../components/layout";
 import Image from "next/image";
-import illustration from "../assets/illustration.svg";
-import github from "../assets/github.svg";
-import linkedin from "../assets/linkedin.png";
-import link from "../assets/link.png";
+import illustration from "../public/assets/illustration.svg";
+import github from "../public/assets/github.svg";
+import linkedin from "../public/assets/linkedin.png";
+import link from "../public/assets/link.png";
 
 export default function Contact() {
   return (
