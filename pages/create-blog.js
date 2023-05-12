@@ -221,7 +221,7 @@ export default function createBlog() {
         )}
 
         {isLoading ? (
-          <div className="mt-8 flex justify-center items-center">
+          <div className="mt-8 flex flex-col justify-center items-center">
             <span
               className="animated-gradient-text-loading text-5xl font-semibold pb-4 mt-10"
               style={{
@@ -231,6 +231,8 @@ export default function createBlog() {
             >
               Generating...
             </span>
+
+            <span>It usually takes 5 to 10 seconds...</span>
             {/* <img src={loading} alt="loading..." /> */}
           </div>
         ) : blogData.content ? (
