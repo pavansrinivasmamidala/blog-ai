@@ -1,6 +1,6 @@
 
 
-export async function fetchOpenAiCompletion(prompt) {
+export async function fetchOpenAiCompletion(prompt, model) {
     console.log(process.env.NEXT_PUBLIC_OPENAI_API_KEY);
   const response = await fetch('https://api.openai.com/v1/chat/completions', {
     method: 'POST',
@@ -9,7 +9,7 @@ export async function fetchOpenAiCompletion(prompt) {
       'Authorization': `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
     },
     body: JSON.stringify({
-      model: 'gpt-3.5-turbo',
+      model: model,
       messages: [{ role: 'user', content: prompt }],
       temperature: 0.7,
     }),

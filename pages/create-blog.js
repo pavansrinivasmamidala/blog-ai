@@ -14,7 +14,6 @@ export default function createBlog() {
   const [blogData, setBlogData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
-  const [showAdvanced, setShowAdvanced] = useState(true);
   const [length, setLength] = useState("Short");
   const [audience, setAudience] = useState([]);
   const lengthOptions = ["Short", "Medium", "Long"];
@@ -26,6 +25,8 @@ export default function createBlog() {
     "Students",
     "Researchers",
   ];
+  const [model, setModel] = useState("gpt-3.5-turbo");
+  const modelOptions = ["gpt-3.5-turbo", "gpt-4"];
   const { dispatch } = useStore();
 
 
@@ -44,10 +45,10 @@ export default function createBlog() {
           " Intended Audience: " +
           audience.join(", ") +
           ". Please include appropriate HTML tags and styling for different font sizes and formatting."
-      );
+      , model);
       console.log("Completion:", completion);
 
-      setBlogData(completion);
+      //setBlogData(completion);
       dispatch({
         type: "SET_BLOG_DATA",
         payload: completion
@@ -72,7 +73,7 @@ export default function createBlog() {
     //console.log(response);
 
     // console.log(blogData);
-    console.log(text);
+    //console.log(text);
     setText("");
   }
 
@@ -109,7 +110,7 @@ export default function createBlog() {
   return (
     <Layout>
       <div className="flex flex-col  justify-center mx-auto items-center ">
-        <div className="flex flex-col justify-center p-10 items-center h-full">
+        <div className="flex flex-col justify-center px-10 py-5 items-center h-full">
           <form
             onSubmit={generateBlog}
             className="flex-col flex justify-center items-center"
@@ -127,7 +128,7 @@ export default function createBlog() {
               </span>
             </span>
             <input
-              className="h-16  pl-2  w-full rounded-md bg-white font-semibold text-4xl p-1 border-black   border-4 mt-8"
+              className="h-16  pl-2  w-full rounded-md bg-white font-semibold text-4xl p-1 border-black   border-4 mt-4"
               type="text"
               value={text}
               placeholder="Longer the Title better the output"
@@ -163,7 +164,7 @@ export default function createBlog() {
           </button>
         </div> */}
 
-        {showAdvanced ? (
+       
           <div className="flex justify-between flex-col mx-auto items-center border-gray-900  border-2 py-8 px-4 rounded-2xl transition-all duration-200 ease-in-out ">
             <div className="flex mb-4 ">
               {lengthOptions.map((option, index) => (
@@ -197,6 +198,25 @@ export default function createBlog() {
                 </label>
               ))}
             </div>
+
+            <div className="flex mb-4 ">
+              {modelOptions.map((option, index) => (
+                <label
+                  key={index}
+                  className={`cursor-pointer px-5 py-1 mr-1 rounded-md  border ${
+                    model === option
+                      ? "bg-black text-white"
+                      : "bg-white text-black border-lightgray "
+                  } transition-colors duration-300 ease-in-out hover:bg-black  text-xl hover:text-white`}
+                  onClick={() => setModel(option)}
+                >
+                  {option == "gpt-4" ? "GPT-4 (Takes Longer) " : "GPT-3.5 (Standard)"}
+                </label>
+              ))}
+            </div>
+            
+
+
             {/* <input
            className="rounded-lg bg-white border-black border-2 "
            type="text"
@@ -204,9 +224,7 @@ export default function createBlog() {
            onChange={(e) => setAudience(e.target.value)}
           /> */}
           </div>
-        ) : (
-          <div></div>
-        )}
+        
         {text.length > 2 ? (
           <div className="mt-8">
             <button
@@ -221,9 +239,9 @@ export default function createBlog() {
         )}
 
         {isLoading ? (
-          <div className="mt-8 flex flex-col justify-center items-center">
+          <div className="mt-4 flex flex-col justify-center items-center">
             <span
-              className="animated-gradient-text-loading text-5xl font-semibold pb-4 mt-10"
+              className="animated-gradient-text-loading text-5xl font-semibold pb-4 mt-6"
               style={{
                 backgroundImage:
                   "linear-gradient(45deg, #007cf0, #00dfd8, #7928ca, #ff0080, #ff4d4d, #f9cb28)",
@@ -234,25 +252,26 @@ export default function createBlog() {
 
             <span>It usually takes 5 to 10 seconds...</span>
             {/* <img src={loading} alt="loading..." /> */}
-          </div>
-        ) : blogData.content ? (
-          <div className="flex flex-col justify-center p-10 items-center">
-            {/* <div className="w-3/4 m-5 ">
-              <img src={imageUrl} alt="cover page" />
-            </div> */}
-            {/* <span className="text-3xl font-bold items-center self-center">
-              {title}
-            </span> */}
-            <div className="border-white border m-10 items-center rounded-md p-10">
-              <span className="text-lg p-20 ">
-                <Article htmlContent={blogData?.content || ""} />
-
-                {/* <FormattedText text={blogData?.content || ""} />{" "} */}
-                {/* <ReactMarkdown >{blogData?.content}</ReactMarkdown>; */}
-              </span>
-            </div>
-          </div>
+          </div> 
         ) : (
+        // ) : blogData.content ? (
+        //   <div className="flex flex-col justify-center p-10 items-center">
+        //     {/* <div className="w-3/4 m-5 ">
+        //       <img src={imageUrl} alt="cover page" />
+        //     </div> */}
+        //     {/* <span className="text-3xl font-bold items-center self-center">
+        //       {title}
+        //     </span> */}
+        //     <div className="border-white border m-10 items-center rounded-md p-10">
+        //       <span className="text-lg p-20 ">
+        //         <Article htmlContent={blogData?.content || ""} />
+
+        //         {/* <FormattedText text={blogData?.content || ""} />{" "} */}
+        //         {/* <ReactMarkdown >{blogData?.content}</ReactMarkdown>; */}
+        //       </span>
+        //     </div>
+        //   </div>
+        // ) : (
           <></>
         )}
       </div>
