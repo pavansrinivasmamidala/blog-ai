@@ -6,16 +6,23 @@ const initialState = {
 };
 
 function reducer(state, action) {
+  console.log(action.payload);
   switch (action.type) {
     case "SET_BLOG_DATA":
       return {
         ...state,
-        blogData: action.payload,
+        blogData: state.blogData ? state.blogData + action.payload : action.payload,
+      };
+    case "CLEAR_STATE":
+      return {
+        ...initialState,
       };
     default:
       throw new Error(`Unknown action: ${action.type}`);
   }
 }
+
+
 
 export const StoreProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);

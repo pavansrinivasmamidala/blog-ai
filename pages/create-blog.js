@@ -30,52 +30,76 @@ export default function createBlog() {
   const { dispatch } = useStore();
 
 
-  async function generateBlog(e) {
+   function generateBlog(e) {
     e.preventDefault();
     setIsLoading(true);
     setTitle(text);
-    //generateCoverPrompt();
 
     try {
-      const completion = await fetchOpenAiCompletion(
+      fetchOpenAiCompletion(
         "Write an HTML formatted article based on Title: " +
-          text +
-          " Size: " +
-          length +
-          " Intended Audience: " +
-          audience.join(", ") +
-          ". Please include appropriate HTML tags and styling for different font sizes and formatting."
-      , model);
-      console.log("Completion:", completion);
-
-      //setBlogData(completion);
-      dispatch({
-        type: "SET_BLOG_DATA",
-        payload: completion
-      });
-      setIsLoading(false);
-      router.push('/read-article');
+        text +
+        " Size: " +
+        length +
+        " Intended Audience: " +
+        audience.join(", ") +
+        ". Please include appropriate HTML tags and styling for different font sizes and formatting."
+        , model, dispatch);
+        setInterval(() => {}, 10000);
+        setIsLoading(false);
+        router.push('/read-article');
 
     } catch (error) {
       console.error("Error fetching completion:", error.message);
     }
+}
 
-    // setIsLoading(false);
-    // console.log(completion.data);
+  // async function generateBlog(e) {
+  //   e.preventDefault();
+  //   setIsLoading(true);
+  //   setTitle(text);
+  //   //generateCoverPrompt();
 
-    // const response = await openai.createCompletion({
-    //   model: "text-davinci-003",
-    //   prompt: `Generate a blog post based on the title: ${text}`,
-    //   temperature: 0.6,
-    //   max_tokens: 100,
-    // });
+  //   try {
+  //     const completion = await fetchOpenAiCompletion(
+  //       "Write an HTML formatted article based on Title: " +
+  //         text +
+  //         " Size: " +
+  //         length +
+  //         " Intended Audience: " +
+  //         audience.join(", ") +
+  //         ". Please include appropriate HTML tags and styling for different font sizes and formatting."
+  //     , model);
+  //     console.log("Completion:", completion);
 
-    //console.log(response);
+  //     //setBlogData(completion);
+  //     dispatch({
+  //       type: "SET_BLOG_DATA",
+  //       payload: completion
+  //     });
+  //     setIsLoading(false);
+  //     router.push('/read-article');
 
-    // console.log(blogData);
-    //console.log(text);
-    setText("");
-  }
+  //   } catch (error) {
+  //     console.error("Error fetching completion:", error.message);
+  //   }
+
+  //   // setIsLoading(false);
+  //   // console.log(completion.data);
+
+  //   // const response = await openai.createCompletion({
+  //   //   model: "text-davinci-003",
+  //   //   prompt: `Generate a blog post based on the title: ${text}`,
+  //   //   temperature: 0.6,
+  //   //   max_tokens: 100,
+  //   // });
+
+  //   //console.log(response);
+
+  //   // console.log(blogData);
+  //   //console.log(text);
+  //   setText("");
+  // }
 
   async function generateCoverPrompt() {
     const response = await openai.createCompletion({
@@ -226,7 +250,7 @@ export default function createBlog() {
           </div>
         
         {text.length > 2 ? (
-          <div className="mt-8">
+          <div className="mt-4">
             <button
               onClick={generateBlog}
               className="px-6 py-3 bg-black text-white rounded-2xl text-3xl  "

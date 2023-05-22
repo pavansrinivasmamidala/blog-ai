@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import FormattedText from "./formattedText";
 import Link from "next/link";
+import { clearState } from "../store/store";
 
 const Article = ({ htmlContent }) => {
   const articleRef = useRef();
@@ -27,8 +28,8 @@ const Article = ({ htmlContent }) => {
   };
 
   return (
-    <div className="container relative">
-      <Link href="/create-blog" className="border-2 absolute left-2  px-3 py-1 rounded-lg border-black "> 
+    <div className="container relative w-full">
+      <Link href="/create-blog"  className="border-2 absolute left-2  px-3 py-1 rounded-lg border-black "> 
       <span
           className="animated-gradient-text-copy text-xl font-bold"
           style={{
