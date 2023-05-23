@@ -2,10 +2,8 @@ import { useState } from "react";
 import Layout from "../components/layout";
 import { fetchOpenAiCompletion } from "../utils/openaiApi";
 import Article from "../components/article";
-import { useStore } from '../store/store';
-import { useRouter } from 'next/router';
-
-
+import { useStore } from "../store/store";
+import { useRouter } from "next/router";
 
 export default function createBlog() {
   const router = useRouter();
@@ -29,30 +27,32 @@ export default function createBlog() {
   const modelOptions = ["gpt-3.5-turbo", "gpt-4"];
   const { dispatch } = useStore();
 
-
-   function generateBlog(e) {
+  function generateBlog(e) {
     e.preventDefault();
+
     setIsLoading(true);
     setTitle(text);
 
-    try {
-      fetchOpenAiCompletion(
-        "Write an HTML formatted article based on Title: " +
+    fetchOpenAiCompletion(
+      "Write an HTML formatted article based on Title: " +
         text +
         " Size: " +
         length +
         " Intended Audience: " +
         audience.join(", ") +
-        ". Please include appropriate HTML tags and styling for different font sizes and formatting."
-        , model, dispatch);
-        setInterval(() => {}, 10000);
-        setIsLoading(false);
-        router.push('/read-article');
-
-    } catch (error) {
+        ". Please include appropriate HTML tags and styling for different font sizes and formatting.",
+      model,
+      dispatch
+    ).catch((error) => {
       console.error("Error fetching completion:", error.message);
-    }
-}
+      setIsLoading(false); // Set loading to false if there is an error
+    });
+
+    setTimeout(() => {
+      setIsLoading(false);
+      router.push("/read-article");
+    }, 5000); // Wait for 5000ms = 5s
+  }
 
   // async function generateBlog(e) {
   //   e.preventDefault();
@@ -188,67 +188,66 @@ export default function createBlog() {
           </button>
         </div> */}
 
-       
-          <div className="flex justify-between flex-col mx-auto items-center border-gray-900  border-2 py-8 px-4 rounded-2xl transition-all duration-200 ease-in-out ">
-            <div className="flex mb-4 ">
-              {lengthOptions.map((option, index) => (
-                <label
-                  key={index}
-                  className={`cursor-pointer px-5 py-1 mr-1 rounded-md  border ${
-                    length === option
-                      ? "bg-black text-white"
-                      : "bg-white text-black border-lightgray "
-                  } transition-colors duration-300 ease-in-out hover:bg-black  text-2xl hover:text-white`}
-                  onClick={() => handleClick(option)}
-                >
-                  {option}
-                </label>
-              ))}
-            </div>
+        <div className="flex justify-between flex-col mx-auto items-center border-gray-900  border-2 py-8 px-4 rounded-2xl transition-all duration-200 ease-in-out ">
+          <div className="flex mb-4 ">
+            {lengthOptions.map((option, index) => (
+              <label
+                key={index}
+                className={`cursor-pointer px-5 py-1 mr-1 rounded-md  border ${
+                  length === option
+                    ? "bg-black text-white"
+                    : "bg-white text-black border-lightgray "
+                } transition-colors duration-300 ease-in-out hover:bg-black  text-2xl hover:text-white`}
+                onClick={() => handleClick(option)}
+              >
+                {option}
+              </label>
+            ))}
+          </div>
 
-            {/* <span className="mb-2 font-semibold text-lg">Intended Audience: </span> */}
-            <div className="flex mb-4 mt-4 max-w-4xl flex-wrap justify-center items-center ">
-              {audienceOptions.map((option, index) => (
-                <label
-                  key={index}
-                  className={`cursor-pointer px-4 py-1 mb-2 mr-3 rounded-md  border ${
-                    audience.includes(option)
-                      ? "bg-black text-white"
-                      : "bg-white text-black border-lightgray "
-                  } transition-colors duration-300 ease-in-out hover:bg-black text-2xl  hover:text-white`}
-                  onClick={() => handleAudienceSelection(option)}
-                >
-                  {option}
-                </label>
-              ))}
-            </div>
+          {/* <span className="mb-2 font-semibold text-lg">Intended Audience: </span> */}
+          <div className="flex mb-4 mt-4 max-w-4xl flex-wrap justify-center items-center ">
+            {audienceOptions.map((option, index) => (
+              <label
+                key={index}
+                className={`cursor-pointer px-4 py-1 mb-2 mr-3 rounded-md  border ${
+                  audience.includes(option)
+                    ? "bg-black text-white"
+                    : "bg-white text-black border-lightgray "
+                } transition-colors duration-300 ease-in-out hover:bg-black text-2xl  hover:text-white`}
+                onClick={() => handleAudienceSelection(option)}
+              >
+                {option}
+              </label>
+            ))}
+          </div>
 
-            <div className="flex mb-4 ">
-              {modelOptions.map((option, index) => (
-                <label
-                  key={index}
-                  className={`cursor-pointer px-5 py-1 mr-1 rounded-md  border ${
-                    model === option
-                      ? "bg-black text-white"
-                      : "bg-white text-black border-lightgray "
-                  } transition-colors duration-300 ease-in-out hover:bg-black  text-xl hover:text-white`}
-                  onClick={() => setModel(option)}
-                >
-                  {option == "gpt-4" ? "GPT-4 (Takes Longer) " : "GPT-3.5 (Standard)"}
-                </label>
-              ))}
-            </div>
-            
+          <div className="flex mb-4 ">
+            {modelOptions.map((option, index) => (
+              <label
+                key={index}
+                className={`cursor-pointer px-5 py-1 mr-1 rounded-md  border ${
+                  model === option
+                    ? "bg-black text-white"
+                    : "bg-white text-black border-lightgray "
+                } transition-colors duration-300 ease-in-out hover:bg-black  text-xl hover:text-white`}
+                onClick={() => setModel(option)}
+              >
+                {option == "gpt-4"
+                  ? "GPT-4 (Takes Longer) "
+                  : "GPT-3.5 (Standard)"}
+              </label>
+            ))}
+          </div>
 
-
-            {/* <input
+          {/* <input
            className="rounded-lg bg-white border-black border-2 "
            type="text"
            value={audience}
            onChange={(e) => setAudience(e.target.value)}
           /> */}
-          </div>
-        
+        </div>
+
         {text.length > 2 ? (
           <div className="mt-4">
             <button
@@ -276,26 +275,26 @@ export default function createBlog() {
 
             <span>It usually takes 5 to 10 seconds...</span>
             {/* <img src={loading} alt="loading..." /> */}
-          </div> 
+          </div>
         ) : (
-        // ) : blogData.content ? (
-        //   <div className="flex flex-col justify-center p-10 items-center">
-        //     {/* <div className="w-3/4 m-5 ">
-        //       <img src={imageUrl} alt="cover page" />
-        //     </div> */}
-        //     {/* <span className="text-3xl font-bold items-center self-center">
-        //       {title}
-        //     </span> */}
-        //     <div className="border-white border m-10 items-center rounded-md p-10">
-        //       <span className="text-lg p-20 ">
-        //         <Article htmlContent={blogData?.content || ""} />
+          // ) : blogData.content ? (
+          //   <div className="flex flex-col justify-center p-10 items-center">
+          //     {/* <div className="w-3/4 m-5 ">
+          //       <img src={imageUrl} alt="cover page" />
+          //     </div> */}
+          //     {/* <span className="text-3xl font-bold items-center self-center">
+          //       {title}
+          //     </span> */}
+          //     <div className="border-white border m-10 items-center rounded-md p-10">
+          //       <span className="text-lg p-20 ">
+          //         <Article htmlContent={blogData?.content || ""} />
 
-        //         {/* <FormattedText text={blogData?.content || ""} />{" "} */}
-        //         {/* <ReactMarkdown >{blogData?.content}</ReactMarkdown>; */}
-        //       </span>
-        //     </div>
-        //   </div>
-        // ) : (
+          //         {/* <FormattedText text={blogData?.content || ""} />{" "} */}
+          //         {/* <ReactMarkdown >{blogData?.content}</ReactMarkdown>; */}
+          //       </span>
+          //     </div>
+          //   </div>
+          // ) : (
           <></>
         )}
       </div>

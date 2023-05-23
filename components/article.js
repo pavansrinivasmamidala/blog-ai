@@ -28,7 +28,7 @@ const Article = ({ htmlContent }) => {
   };
 
   return (
-    <div className="container relative w-full">
+    <div className="container relative mt-16 ">
       <Link href="/create-blog"  className="border-2 absolute left-2  px-3 py-1 rounded-lg border-black "> 
       <span
           className="animated-gradient-text-copy text-xl font-bold"

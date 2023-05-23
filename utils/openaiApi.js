@@ -94,4 +94,6 @@ export async function fetchOpenAiCompletion(prompt, model, dispatch) {
     // Clear the partial text
     partialText = "";
   }
+
+  
 }
