@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
 import FormattedText from "./formattedText";
 import Link from "next/link";
-import { clearState } from "../store/store";
 
 const Article = ({ htmlContent }) => {
   const articleRef = useRef();

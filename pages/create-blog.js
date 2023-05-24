@@ -248,7 +248,7 @@ export default function createBlog() {
           /> */}
         </div>
 
-        {text.length > 2 ? (
+        {(text.length > 2 && !isLoading) ? (
           <div className="mt-4">
             <button
               onClick={generateBlog}

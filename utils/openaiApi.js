@@ -41,6 +41,7 @@
 
 export async function fetchOpenAiCompletion(prompt, model, dispatch) {
   dispatch({ type: "CLEAR_STATE" });
+  
   const response = await fetch("https://api.openai.com/v1/chat/completions", {
     method: "POST",
     headers: {
@@ -78,6 +79,10 @@ export async function fetchOpenAiCompletion(prompt, model, dispatch) {
       if (line.trim() !== "") {
         // Remove the 'data: ' prefix
         const validJson = line.replace("data: ", "");
+        if(validJson == "[DONE]"){
+            break;
+        }
+
         try {
           const parsed = JSON.parse(validJson);
           dispatch({
