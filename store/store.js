@@ -2,6 +2,7 @@ import React, { createContext, useReducer, useContext } from "react";
 
 const StoreContext = createContext();
 const initialState = {
+  title:null,
   blogData: null
 };
 
@@ -13,6 +14,11 @@ function reducer(state, action) {
         ...state,
         blogData: state.blogData ? state.blogData + action.payload : action.payload,
       };
+    case "SET_TITLE":{
+      console.log(action.payload);
+      return {...state, title: action.payload}
+    } 
+      
     case "CLEAR_STATE":
       return {
         ...initialState,

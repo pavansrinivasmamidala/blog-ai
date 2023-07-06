@@ -5,9 +5,10 @@ import { useEffect, useState } from "react";
 
 export default function ReadArticle() {
   const { state } = useStore();
-  const { blogData } = state;
+  const { blogData, title } = state;
   const [isLoading, setIsLoading] = useState(true);
   const [isFinished, setIsFinished] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     console.log(blogData);
@@ -21,6 +22,28 @@ export default function ReadArticle() {
     // This will re-render the component every time blogData changes
   }, [blogData]);
 
+  const saveBlogPost = async (title, content) => {
+    try {
+      const response = await fetch("/api/saveBlog", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ title, content }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error);
+      }
+      setIsSaved(true);
+      return data;
+    } catch (error) {
+      console.error("Error saving blog post", error);
+    }
+  };
+
   return (
     <Layout>
       <div className="flex flex-col justify-center items-center">
@@ -28,9 +51,13 @@ export default function ReadArticle() {
           <>
             <Article htmlContent={blogData || ""} />
             {isFinished ? (
-              <div className="mt-8 justify-center flex items-center" >
-                <button  className="px-6 py-3 bg-black text-white rounded-2xl text-3xl ">
-                  Submit to Showcase
+              <div className="mt-8 justify-center flex items-center">
+                <button
+                  onClick={() => saveBlogPost(title, blogData)}
+                  disabled={isSaved}
+                  className="px-6 py-3 bg-black text-white rounded-2xl text-3xl "
+                >
+                  {isSaved ? "Submitted" : "Submit to Showcase"}
                 </button>
               </div>
             ) : (

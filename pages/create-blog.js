@@ -33,6 +33,11 @@ export default function createBlog() {
     setIsLoading(true);
     setTitle(text);
 
+    dispatch({
+      type: "SET_TITLE",
+      payload: text,
+    });
+
     fetchOpenAiCompletion(
       "Write an HTML formatted article based on Title: " +
         text +
@@ -51,7 +56,7 @@ export default function createBlog() {
     setTimeout(() => {
       setIsLoading(false);
       router.push("/read-article");
-    }, 5000); // Wait for 5000ms = 5s
+    }, 3500); // Wait for 5000ms = 5s
   }
 
   // async function generateBlog(e) {
@@ -273,7 +278,7 @@ export default function createBlog() {
               Generating...
             </span>
 
-            <span>It usually takes 5 to 10 seconds...</span>
+            <span>It usually takes 2 to 5 seconds...</span>
             {/* <img src={loading} alt="loading..." /> */}
           </div>
         ) : (
